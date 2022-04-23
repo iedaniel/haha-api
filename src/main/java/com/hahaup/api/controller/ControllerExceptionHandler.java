@@ -19,14 +19,7 @@ public class ControllerExceptionHandler {
         if (e instanceof DataIntegrityViolationException) {
             if (e.getCause() instanceof ConstraintViolationException) {
                 ConstraintViolationException ee = (ConstraintViolationException) e.getCause();
-                String msg = "Ошибка: ";
-                switch (ee.getConstraintName()) {
-                    case "users_username_key":
-                        msg += "пользователь с таким логином уже существует";
-                        break;
-
-                }
-                return new BaseResponse<>(new RuntimeException(msg));
+                return new BaseResponse<>(new RuntimeException(ee.getSQLException()));
             }
         }
         return new BaseResponse<>(e);

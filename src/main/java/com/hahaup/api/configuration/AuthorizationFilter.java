@@ -22,7 +22,8 @@ public class AuthorizationFilter extends HttpFilter {
 
     private static final String[] exclusions = {
             "/user/login",
-            "/user/register"
+            "/user/register",
+            "/partner/public/**"
     };
 
     private static final String[] BLACK_LIST_USERS = {
