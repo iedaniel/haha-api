@@ -6,6 +6,7 @@ import lombok.Data;
 public class PartnerResponse {
 
     private String fio;
+    private String username;
     private String description;
     private String photoUrl;
     private String externalUserId;

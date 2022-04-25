@@ -1,7 +1,10 @@
 package com.hahaup.api.service;
 
+import com.hahaup.api.client.CloudTipsIdentityClient;
 import com.hahaup.api.logic.mapper.PartnerMapper;
 import com.hahaup.api.model.dto.IdDto;
+import com.hahaup.api.model.dto.cloudtips.IdentityResponse;
+import com.hahaup.api.model.dto.cloudtips.ReceiverResponse;
 import com.hahaup.api.model.dto.partner.CreatePartnerRequest;
 import com.hahaup.api.model.dto.partner.PartnerResponse;
 import com.hahaup.api.model.entity.PartnerEntity;
@@ -19,15 +22,17 @@ public class PartnerService {
 
     private final PartnerMapper partnerMapper;
     private final PartnerRepository partnerRepository;
+    private final CloudtipsService cloudtipsService;
 
     @Transactional
     public IdDto<String> createPartner(CreatePartnerRequest request) {
         //todo подумать про разделение партнеров по place в cloudtips
         PartnerEntity partnerEntity = partnerMapper.newPartnerToEntity(request);
-        // todo api cloudtips
-        partnerEntity.setExternalUserId("2342342");
-        partnerEntity.setExternalLayoutId("6778978");
-        // todo api cloudtips
+
+        ReceiverResponse partner = cloudtipsService.createPartner(request);
+        partnerEntity.setExternalUserId(partner.getUserId());
+        partnerEntity.setExternalLayoutId(partner.getLayoutId());
+
         partnerRepository.save(partnerEntity);
         return new IdDto<>(partnerEntity.getExternalUserId());
     }

@@ -4,10 +4,7 @@ import com.hahaup.api.model.dto.BaseResponse;
 import com.hahaup.api.model.dto.user.UsernamePasswordDto;
 import com.hahaup.api.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +27,11 @@ public class UserController {
     public BaseResponse<?> register(@RequestBody UsernamePasswordDto request) {
         request.validate();
         userService.register(request);
+        return new BaseResponse<>();
+    }
+
+    @GetMapping("/validate")
+    public BaseResponse<?> validate() {
         return new BaseResponse<>();
     }
 }
