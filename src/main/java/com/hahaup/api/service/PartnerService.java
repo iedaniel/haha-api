@@ -1,9 +1,8 @@
 package com.hahaup.api.service;
 
-import com.hahaup.api.client.CloudTipsIdentityClient;
+import com.hahaup.api.client.PhotoResponse;
 import com.hahaup.api.logic.mapper.PartnerMapper;
 import com.hahaup.api.model.dto.IdDto;
-import com.hahaup.api.model.dto.cloudtips.IdentityResponse;
 import com.hahaup.api.model.dto.cloudtips.ReceiverResponse;
 import com.hahaup.api.model.dto.partner.CreatePartnerRequest;
 import com.hahaup.api.model.dto.partner.PartnerResponse;
@@ -31,7 +30,7 @@ public class PartnerService {
 
         ReceiverResponse partner = cloudtipsService.createPartner(request);
         partnerEntity.setExternalUserId(partner.getUserId());
-        partnerEntity.setExternalLayoutId(partner.getLayoutId());
+        partnerEntity.setExternalLayoutId(/*partner.getLayoutId()*/ "sdfsdfsfd");
 
         partnerRepository.save(partnerEntity);
         return new IdDto<>(partnerEntity.getExternalUserId());
@@ -43,8 +42,8 @@ public class PartnerService {
         if (partner == null) {
             throw new RuntimeException("Партнер не найден в системе");
         }
-        //todo api cloudtips
-        partner.setPhotoUrl("string");
+        PhotoResponse photo = cloudtipsService.addPhoto(partner.getExternalUserId(), file);
+        partner.setPhotoUrl(photo.getPhotoUrl());
     }
 
     public PartnerResponse getInfo(String username) {
